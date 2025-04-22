@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{% static "css/homepage.css" %}"> -->
+    <link rel="stylesheet" href="../static/css/homepage.css">
+    <title>{%block title %} {% endblock%}</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="div-navbar">
+            <div class="logo"><a href="home.html">logo</a></div>
+            <div class="nav-text">
+                <ul>
+                    <li><a href="home">home</a></li>
+                    <li><a href="home">blog</a></li>
+                    <li><a href="home">aboutme</a></li>
+                    <li><a href="home">project</a></li>
+                    <li><a href="home">contact me</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% content block%}{% endblock %}
+</body>
+</html>
