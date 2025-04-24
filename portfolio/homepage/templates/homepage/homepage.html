@@ -12,6 +12,18 @@
         </a>
         <p>{{ i.body|truncatewords_html:10 }}</p>
         {% endfor %}
+
+    </div>
+
+    <div class="project">
+        {% if projects %}
+            {% for i in projects %}
+                <a href="{{ i.get_absolute_url }}">
+                    {{i.title}}
+                </a>
+                <p>{{ i.body|truncatewords_html:10 }}</p>
+            {% endfor %}
+        {% endif %}
     </div>
 </main>
 

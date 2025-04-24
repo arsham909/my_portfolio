@@ -14,8 +14,6 @@ class Post(models.Model):
         DRAFT = 'Df', 'Draft'
         PUBLISHED = 'PB' , 'Published'
         
-    
-    
     title =  models.CharField(max_length=250)
     slug = models.SlugField(max_length=250)
     author = models.ForeignKey(
@@ -27,6 +25,7 @@ class Post(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
     
     status = models.CharField(
         max_length=2,
