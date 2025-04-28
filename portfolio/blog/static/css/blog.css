@@ -9,6 +9,42 @@ a {
     text-decoration:none; 
 }
 
+/* nav bar */
+#div-navbar{
+    background-color: #FFC602;
+}
+
+.container-navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+a{
+    text-decoration: none;
+}
+
+.nav-text ul{
+    display: flex;
+    padding: 0em;
+    margin: 0%;
+    list-style-type: none;
+}
+li{
+    padding: 15px;
+    margin: 10px;
+}
+
+.logo{
+    margin: 10px;
+    padding: 10px;
+}
+
+.div-navbar li :hover{
+    color: rgb(177, 0, 0);
+}
+
 h1 { 
     font-weight:normal;
     border-bottom:1px solid #bbb;
@@ -21,6 +57,7 @@ h2 {
 }
 
 #content { 
+    max-width: 1024px;
     float:left;
     width:60%;
     padding:0 0 0 30px; 
@@ -101,3 +138,5 @@ input[type=submit] {
     font-size:12px;
     color:#666;
 }
+
+

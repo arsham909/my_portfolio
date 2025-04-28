@@ -1,0 +1,19 @@
+{% extends "base.html"%}
+
+{% block title %} Contact Me {% endblock%}
+{% block content %}
+
+    {% if sent %}
+        <h1 class="sent">Request has been sent to Arsham</h1>
+
+    {% else %}
+    <div class="conactme">
+        <h1> Contact me</h1>
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Send email">
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}

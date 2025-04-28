@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="{% static "css/blog.css" %}">
 </head>
 <body>
+    <nav class="navbar">
+        <div id="div-navbar">
+            <div class="container-navbar">
+                <div class="logo"><a href="home"># Arsham</a></div>
+                <div class="nav-text">
+                    <ul>
+                        <li><a href="home">home</a></li>
+                        <li><a href="blog">blog</a></li>
+                        <li><a href="home">about me</a></li>
+                        <li><a href="home">project</a></li>
+                        <li><a href="contactme">contact me</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div id="content">
         {% block content %}
         {% endblock %}
