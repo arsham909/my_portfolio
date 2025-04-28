@@ -1,7 +1,7 @@
 body{
     max-width: 1024px;
     margin: 0 auto;
-    background-color: hsl(0, 0%, 85%);
+    background-color: hsl(0, 0%, 27%);
 }
 
 .div-navbar{
@@ -31,5 +31,6 @@ li{
 }
 
 .div-navbar li :hover{
-    color: rgb(65, 65, 65);
+    color: rgb(177, 0, 0);
 }
+
