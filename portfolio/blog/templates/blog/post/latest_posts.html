@@ -1,7 +1,9 @@
-<ul>
-    {% for post in latest_posts %}
-    <li>
-        <a href="{{ post.get_absolute_url }}">{{post.title}}</a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="latest-posts-widget">
+    <ul class="latest-posts-list">
+        {% for post in latest_posts %}
+        <li class="latest-posts-item">
+            <a href="{{ post.get_absolute_url }}">{{post.title}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
