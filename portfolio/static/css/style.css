@@ -1,6 +1,6 @@
 body{
     margin: 0 auto;
-    background-color: hsl(0, 84%, 43%);
+    background-color: hsl(0, 0%, 83%);
 }
 
 .div-navbar{
@@ -24,8 +24,8 @@ a{
     margin: 0%;
     list-style-type: none;
 }
-li{
-    padding: 15px;
+.nav-text-li{
+    padding: 10px;
     margin: 10px;
 }
 
@@ -109,4 +109,66 @@ input[type=submit] {
 .conactme{
     max-width: 1024px;
     margin: 0 auto;
+}
+
+/* main contetnt for blog */
+#main-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.latest-posts-widget {
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.latest-posts-list {
+    list-style: none;
+    padding: 10px;
+    margin: 10px;
+}
+
+.latest-posts-item {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.latest-posts-item a {
+    color: #00a53f;
+    text-decoration: none;
+}
+
+.latest-posts-item a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+/* most-commented-post */
+.most-commented-post{
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.most-commented-post-ul{
+    list-style: none;
+    padding: 10px;
+    margin: 10px;
+}
+.most-commented-post-li{
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.most-commented-post-li a {
+    color: #00a53f;
+    text-decoration: none;
+}
+
+.most-commented-post-li a:hover {
+    text-decoration: underline;
+    color: red;
 }

@@ -5,26 +5,51 @@
 
 <main >
     <div class="intro">
-        <p class="">hi my name is Arsham</p>
-        {% for i in recentPosts%}
-        <a href="{{ i.get_absolute_url }}">
-            {{i.title}}
-        </a>
-        <p>{{ i.body|truncatewords_html:10 }}</p>
-        {% endfor %}
+        <p class="intro-title">Hi my name is <span class="name">Arsham</span></p>
+        <p class="intro-text">I'm an Engineer who crossed bridges between mechanic, electronics and now coding</p>
+        <p class="intro-text">This isn't just a usual portfolio website</p>
+        <p class="intro-text">It's where my ideas, experiments and travels come to life</p>
+        <p class="intro-text">Welcome to my world of curosity, building, and exploring</p>
+        
 
     </div>
-
-    <div class="project">
+    <h2 class="recent-blog">Recent Blog</h2>
+    <div class="blogs">
+        {% for i in recentPosts%}
+        <div class="blog">
+            <a href="{{ i.get_absolute_url }}"><h3 class="blog-title">{{i.title}}</h3></a>
+            <p class="blog-text">{{ i.body|truncatewords_html:10 }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <h2 class="recent-project">Recent Projects</h2>
+    <div class="projects">
         {% if projects %}
-            {% for i in projects %}
-                <a href="{{ i.get_absolute_url }}">
-                    {{i.title}}
-                </a>
-                <p>{{ i.body|truncatewords_html:10 }}</p>
-            {% endfor %}
+        {% for i in projects %}
+        <div class="project">
+            <a href="{{ i.get_absolute_url }}" class="project-title">{{i.title}}</a>
+            <p class="project-text">{{ i.body|truncatewords_html:10 }}</p>
+        </div>
+        {% endfor %}
         {% endif %}
     </div>
+
+    <!-- <div class="contact-me">
+    {% if sent %}
+    <h1 class="sent">Request has been sent to Arsham</h1>
+
+    {% else %}
+    <div class="conactme">
+        <h1> Contact me</h1>
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Send email">
+        </form>
+    </div>
+    {% endif %}
+    </div> -->
+    
 </main>
 
 {% endblock %}

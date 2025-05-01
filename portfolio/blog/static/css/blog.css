@@ -1,4 +1,4 @@
-body { 
+/* body { 
     margin:0;
     padding:0;
     font-family:helvetica, sans-serif; 
@@ -7,6 +7,42 @@ body {
 a { 
     color:#00abff;
     text-decoration:none; 
+} */
+
+/* nav bar */
+/* #div-navbar{
+    background-color: #FFC602;
+}
+
+.container-navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+a{
+    text-decoration: none;
+}
+
+.nav-text ul{
+    display: flex;
+    padding: 0em;
+    margin: 0%;
+    list-style-type: none;
+}
+li{
+    padding: 15px;
+    margin: 10px;
+}
+
+.logo{
+    margin: 10px;
+    padding: 10px;
+}
+
+.div-navbar li :hover{
+    color: rgb(177, 0, 0);
 }
 
 h1 { 
@@ -19,15 +55,19 @@ h2 {
     font-weight:normal;
     margin:30px 0 0;
 }
+#main-content{
+    max-width: 1024px;
+    margin: 0 auto;
+}
 
 #content { 
-    float:left;
+    float: left;
     width:60%;
     padding:0 0 0 30px; 
 }
 
 #sidebar { 
-    float:right;
+    float: right;
     width:30%;
     padding:10px;
     background:#efefef; 
@@ -50,16 +90,16 @@ p.tags {
 .left {
     float:left;
     margin-right:10px;
-}
+} */
 
 /* pagination */
-.pagination { 
+/* .pagination { 
     margin:40px 0; 
     font-weight:bold;
-}
+} */
 
 /* forms */
-label { 
+/* label { 
     float:left;
     clear:both;
     color:#333;
@@ -89,7 +129,7 @@ input[type=submit] {
     padding-left:10px; 
 }
 
-/* comments */
+comments 
 .comment {
     padding:10px;
 }
@@ -100,4 +140,4 @@ input[type=submit] {
     font-weight:bold;
     font-size:12px;
     color:#666;
-}
+} */
