@@ -1,0 +1,112 @@
+body{
+    margin: 0 auto;
+    background-color: hsl(0, 84%, 43%);
+}
+
+.div-navbar{
+    background-color: #FFC602;
+}
+
+.container-navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+a{
+    text-decoration: none;
+}
+
+.nav-text ul{
+    display: flex;
+    padding: 0em;
+    margin: 0%;
+    list-style-type: none;
+}
+li{
+    padding: 15px;
+    margin: 10px;
+}
+
+.logo{
+    margin: 10px;
+    padding: 10px;
+}
+
+.div-navbar li :hover{
+    color: rgb(177, 0, 0);
+}
+
+.blogs{
+    margin: 0 auto;
+    max-width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    gap: 1.0rem;
+}
+.blog{
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    background: #ffe713;
+    transition: transform 0.3s ease;
+}
+
+.blog:hover{
+    transform: translateY(-5px);
+}
+
+.projects{
+    display: flex;
+    max-width: 1024px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.project{
+    flex: 1;
+    border: 1 solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    background: #ffe713;
+    transition: transform 0.3s ease;
+}
+.project:hover{
+    transform: translateY(-5px);
+}
+main{
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+/* forms */
+label { 
+    float:left;
+    clear:both;
+    color:#000000;
+    margin-bottom:4px; 
+}
+input, textarea { 
+    clear:both;
+    float:left;
+    margin:0 0 10px;
+    background:#ededed;
+    border:0;
+    padding:6px 10px;
+    font-size:12px;
+}
+input[type=submit] {
+    font-weight:bold;
+    background:#00abff;
+    color:#fff;
+    padding:10px 20px;
+    font-size:14px;
+    text-transform:uppercase; 
+}
+.conactme{
+    max-width: 1024px;
+    margin: 0 auto;
+}
