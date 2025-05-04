@@ -18,3 +18,5 @@ data/
 
 Dockerfile
 *.yml
+
+uwsgi_app.sock
