@@ -1,0 +1,39 @@
+services:
+
+  db:
+    image: postgres:16.2
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB= ${DATABASE_NAME}
+      - POSTGRES_USER= ${DATABASE_NAME}
+      - POSTGRES_PASSWORD= ${DATABASE_PASSWORD}
+
+  web:
+    build: .
+    command: ["./wait-for-it.sh", "db:5432", "--",
+          "uwsgi","--ini", "/code/config/uwsgi/uwsgi.ini"]
+    restart: always
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=portfolio.settings.prod
+      - DJANGO_SECRET_KEY= ${DJANGO_SECRET_KEY}
+      - POSTGRES_DB= ${DATABASE_NAME}
+      - POSTGRES_USER= ${DATABASE_NAME}
+      - POSTGRES_PASSWORD= ${DATABASE_PASSWORD}
+    depends_on:
+      - db
+      
+
+  nginx:
+    image: nginx:1.25.5
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+      - "80:80"
