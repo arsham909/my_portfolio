@@ -13,3 +13,11 @@ __pycache__/
 *.pyc 
 */*.pyc 
 */*/*.pyc
+
+data/
+
+Dockerfile
+*.yml
+
+uwsgi_app.sock
+.env

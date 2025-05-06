@@ -1,0 +1,2 @@
+*.sock
+portfolio/uwsgi_app.sock
