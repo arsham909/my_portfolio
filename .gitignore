@@ -20,3 +20,4 @@ Dockerfile
 *.yml
 
 uwsgi_app.sock
+.env
