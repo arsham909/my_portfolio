@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y netcat
 # install dependencies
 RUN pip install --upgrade pip
 # Step 1: Copy requirements.txt FIRST so pip can install them
-COPY ./portfolio/requirements.txt .
+COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 # Step 2: Copy ALL required files, including entrypoint.sh and your app code
 # This single command copies everything from your host build context (e.g., the directory with Dockerfile)
 # into the container's WORKDIR (/usr/src/app).
-COPY ./portfolio/entrypoint.sh  .
+COPY ./entrypoint.sh  .
 
 # Set permissions and format for entrypoint.sh
 # Assuming entrypoint.sh is now at /usr/src/app/portfolio/entrypoint.sh or /usr/src/app/entrypoint.sh

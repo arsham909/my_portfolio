@@ -1,5 +1,5 @@
 venv/
-.env
+*.env*
 
 # Django stuff:
 *.log
@@ -19,4 +19,3 @@ data/
 
 
 uwsgi_app.sock
-.env

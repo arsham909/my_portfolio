@@ -1,2 +1,6 @@
 *.sock
 portfolio/uwsgi_app.sock
+
+data/
+*/__pycache__
+*.sqlite3

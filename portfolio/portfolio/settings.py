@@ -17,12 +17,12 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #email server config
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 
 
@@ -30,12 +30,17 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t7totnjox3&s8^itn9k%rq)x5sfu91!eb1y^r%#zs&ad6*q5*p'
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = 'sadasdasda'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = bool(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ['*']
+DEBUG = bool(os.environ.get("DEBUG", default=1))
+
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(' ')
+ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -50,6 +55,7 @@ INSTALLED_APPS = [
     'taggit',
     'blog.apps.BlogConfig',
     'homepage.apps.HomepageConfig',
+    'upload',
 ]
 
 MIDDLEWARE = [
@@ -87,9 +93,13 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -129,14 +139,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
