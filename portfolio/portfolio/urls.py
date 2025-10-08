@@ -21,14 +21,17 @@ from blog.sitemaps import PostSitemap
 from django.conf import settings
 from django.conf.urls.static import static
 
+from upload.views import image_upload
+
 sitemaps = {
     'posts' : PostSitemap,
 }
 
 urlpatterns = [
+    path("", image_upload, name="upload"),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls', namespace='blog')),
-    path('', include('homepage.urls', namespace='homepage')),
+    path('home/', include('homepage.urls', namespace='homepage')),
     path(
         'sitemap.xml',
         sitemap,
@@ -36,4 +39,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'
     )
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+
+if bool(settings.DEBUG):
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
