@@ -43,3 +43,7 @@ def contact_me(request):
     else:
         form = ContactMe()
     return render(request, 'homepage/contactme.html',{'form':form, 'sent':sent})
+
+def about_me(request):
+    if request.method == "GET":
+        return render(request, 'homepage/aboutme.html', )

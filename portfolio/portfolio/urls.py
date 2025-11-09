@@ -28,7 +28,8 @@ sitemaps = {
 }
 
 urlpatterns = [
-    path("", image_upload, name="upload"),
+    # path("", image_upload, name="upload"),
+    path('', include('homepage.urls', namespace='homepage')),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls', namespace='blog')),
     path('home/', include('homepage.urls', namespace='homepage')),
