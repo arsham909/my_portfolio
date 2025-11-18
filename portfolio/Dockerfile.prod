@@ -40,7 +40,7 @@ RUN pip install --upgrade pip && \
 
 # copy project source code
 COPY . $APP_HOME
-# --- added exactly as requested ---
+
 COPY --chown=app:app ./entrypoint.prod.sh /home/app/web/entrypoint.prod.sh
 
 RUN apt-get update && \
