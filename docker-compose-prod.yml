@@ -2,7 +2,7 @@
 services:
   web:
     build:
-      context: .
+      context: ./portfolio
       dockerfile: Dockerfile.prod
     command: gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000
     volumes:
@@ -23,7 +23,7 @@ services:
       - .env.prod_db
   
   nginx:
-    build: ../nginx
+    build: ./nginx
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
