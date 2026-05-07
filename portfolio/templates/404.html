@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}404 — page not found{% endblock %}
+{% block meta_description %}404 — this page doesn't exist (yet).{% endblock %}
+
+{% block content %}
+<main>
+    <section class="error-hero">
+        <div class="error-code">404</div>
+        <h1>page not found.</h1>
+        <p class="error-lede">the URL you followed leads nowhere — could be a typo, a moved page, or just a path i never built.</p>
+        <p class="error-sub">no infinite loop. no rabbit hole. just nothing here.</p>
+        <div class="social-row">
+            <a class="social-link primary" href="{% url 'homepage:homepage' %}">← back home</a>
+            <a class="social-link" href="{% url 'homepage:project_list' %}">projects</a>
+            <a class="social-link" href="{% url 'blog:post_list' %}">blog</a>
+            <a class="social-link" href="{% url 'homepage:contactme' %}">tell me what you were looking for</a>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load blog_tags %}
+<footer>
+    <div>
+        <a href="{% url 'homepage:homepage' %}">home</a>
+        <a href="{% url 'homepage:project_list' %}">projects</a>
+        <a href="{% url 'blog:post_list' %}">blog</a>
+        <a href="{% url 'blog:post_feed' %}">rss</a>
+        <a href="{% url 'homepage:aboutme' %}">about</a>
+        <a href="{% url 'homepage:contactme' %}">contact</a>
+    </div>
+    <p>&copy; {% now "Y" %} Arsham Ardeshirian · {% total_posts %} posts</p>
+    <p class="footer-meta">last updated {% now "M j, Y" %}</p>
+</footer>
