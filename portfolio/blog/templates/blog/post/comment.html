@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Comment — {{ post.title }}{% endblock %}
+
+{% block content %}
+<main>
+    {% if comment %}
+        <div class="form-card">
+            <div class="flash-success">your comment was added.</div>
+            <p><a href="{{ post.get_absolute_url }}">&larr; back to post</a></p>
+        </div>
+    {% else %}
+        <section class="hero">
+            <h1>add a comment</h1>
+        </section>
+        <div class="form-card">
+            {% include "blog/post/include/comment_form.html" %}
+        </div>
+    {% endif %}
+</main>
+{% endblock %}

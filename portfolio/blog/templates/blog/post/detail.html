@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load blog_tags %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<main>
+    <header class="article-header">
+        <h1>{{ post.title }}</h1>
+        <div class="article-meta">
+            {{ post.publish|date:"M j, Y" }} &middot; {{ post.author }}
+        </div>
+        <div class="tags">
+            {% for t in post.tags.all %}
+                <a class="tag" href="{% url 'blog:post_list_by_tag' t.slug %}">{{ t.name }}</a>
+            {% endfor %}
+        </div>
+    </header>
+
+    {% if post.image %}
+    <div class="post-cover">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+    </div>
+    {% endif %}
+
+    <article class="article-body">
+        {{ post.body|markdown }}
+    </article>
+
+    {% if unused_images %}
+    <section class="post-gallery">
+        <h2>gallery</h2>
+        <div class="gallery-grid">
+            {% for img in unused_images %}
+            <figure>
+                <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:img.caption }}" loading="lazy">
+                {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+            </figure>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <p style="margin-top: 2rem;">
+        <a class="btn" href="{% url 'blog:post_share' post.id %}">share this post</a>
+    </p>
+
+    {% if similar_posts %}
+    <section>
+        <h2>similar posts</h2>
+        <div class="card-grid">
+            {% for sp in similar_posts %}
+            <article class="card">
+                <h3><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></h3>
+                <div class="card-meta">{{ sp.publish|date:"M j, Y" }}</div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="comments">
+        {% with comments.count as total_comments %}
+        <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+        {% endwith %}
+        {% for comment in comments %}
+        <div class="comment">
+            <p class="info">#{{ forloop.counter }} &middot; {{ comment.name }} &middot; {{ comment.created|date:"M j, Y" }}</p>
+            {{ comment.body|linebreaks }}
+        </div>
+        {% empty %}
+        <p>no comments yet.</p>
+        {% endfor %}
+        {% include "blog/post/include/comment_form.html" %}
+    </section>
+</main>
+{% endblock %}
