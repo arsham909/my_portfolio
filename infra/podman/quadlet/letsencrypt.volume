@@ -1,0 +1,8 @@
+[Unit]
+Description=Traefik Let's Encrypt ACME storage
+
+[Volume]
+VolumeName=letsencrypt
+
+[Install]
+WantedBy=multi-user.target

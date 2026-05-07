@@ -1,0 +1,26 @@
+[Unit]
+Description=Portfolio Django app
+After=postgres.service
+Requires=postgres.service
+
+[Container]
+ContainerName=portfolio
+Image=ghcr.io/arsham/portfolio:latest
+Network=portfolio.network
+EnvironmentFile=/etc/portfolio/portfolio.env
+Environment=SQL_HOST=postgres
+Environment=SQL_PORT=5432
+PublishPort=127.0.0.1:8000:8000
+HealthCmd=python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz/',timeout=2).status==200 else 1)"
+HealthInterval=30s
+HealthRetries=3
+HealthTimeout=5s
+HealthStartPeriod=60s
+NoNewPrivileges=true
+
+[Service]
+Restart=always
+TimeoutStartSec=240
+
+[Install]
+WantedBy=default.target

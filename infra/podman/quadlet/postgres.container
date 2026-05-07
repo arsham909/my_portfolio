@@ -1,0 +1,24 @@
+[Unit]
+Description=Portfolio Postgres 15
+After=portfolio-network.service pg_data-volume.service
+Requires=portfolio-network.service pg_data-volume.service
+
+[Container]
+ContainerName=postgres
+Image=docker.io/library/postgres:15-alpine
+Network=portfolio.network
+Volume=pg_data.volume:/var/lib/postgresql/data:Z
+EnvironmentFile=/etc/portfolio/db.env
+HealthCmd=pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+HealthInterval=10s
+HealthRetries=5
+HealthTimeout=5s
+HealthStartPeriod=30s
+NoNewPrivileges=true
+
+[Service]
+Restart=always
+TimeoutStartSec=180
+
+[Install]
+WantedBy=default.target

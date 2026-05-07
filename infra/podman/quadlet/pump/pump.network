@@ -1,0 +1,7 @@
+# Rootful network for pump-api ↔ pump-dashboard inter-container DNS via aardvark.
+# Installed at /etc/containers/systemd/pump.network on pump-server (142.93.7.44).
+# Quadlet generates pump-network.service automatically (`systemctl status pump-network`).
+[Network]
+NetworkName=pump
+DisableDNS=false
+IPv6=false

@@ -1,0 +1,10 @@
+[Unit]
+Description=Portfolio internal podman network
+
+[Network]
+NetworkName=portfolio
+DisableDNS=false
+IPv6=false
+
+[Install]
+WantedBy=default.target

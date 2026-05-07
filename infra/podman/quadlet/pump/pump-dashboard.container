@@ -1,0 +1,41 @@
+# pump-dashboard — Streamlit UI (Phase D conversion from Docker).
+# Talks to pump-api over the `pump` network via aardvark-dns (`http://pump-api:8000`).
+# PublishPort binds 100.82.48.74 (pump-server's Tailscale IP) so main's Traefik
+# reaches it over the tailnet only — no public exposure.
+[Unit]
+Description=pump-dashboard Streamlit UI
+After=network-online.target pump-api.service
+Wants=network-online.target
+Requires=pump-api.service
+
+[Container]
+Image=localhost/pump-dashboard:latest
+ContainerName=pump-dashboard
+# See pump-api.container for why the `:alias=` suffix is required.
+Network=pump.network:alias=pump-dashboard
+Volume=/srv/pump/code/samples:/samples:ro
+Volume=/srv/pump/code/models:/app/models:ro
+Environment=API_URL=http://pump-api:8000
+Environment=SAMPLE_DIR=/samples
+Environment=METRICS_REPORT=/app/models/metrics_report.json
+Environment=MPLBACKEND=Agg
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=MKL_NUM_THREADS=1
+Environment=STREAMLIT_LOGGER_LEVEL=warning
+Environment=PYTHONUNBUFFERED=1
+PublishPort=100.82.48.74:8501:8501
+HealthCmd=python -c "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:8501/_stcore/health').status == 200 else sys.exit(1)"
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=30s
+LogDriver=journald
+NoNewPrivileges=true
+
+[Service]
+Restart=always
+TimeoutStartSec=120
+
+[Install]
+WantedBy=default.target

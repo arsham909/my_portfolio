@@ -1,0 +1,8 @@
+[Unit]
+Description=Portfolio Postgres data volume
+
+[Volume]
+VolumeName=pg_data
+
+[Install]
+WantedBy=default.target

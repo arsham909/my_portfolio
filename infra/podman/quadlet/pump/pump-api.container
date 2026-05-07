@@ -1,0 +1,45 @@
+# pump-api — FastAPI inference service (Phase D conversion from Docker).
+# Rootful Quadlet on pump-server. Image built locally from /srv/pump/code via
+# `podman build -f infra/docker/Dockerfile.api -t localhost/pump-api:latest .`
+# Phase F switches to GHCR digest pulls.
+#
+# Listens on the Tailscale IPv4 only — main's Traefik (134.209.208.211) reaches
+# this over the tailnet. No public port. Models bind-mount read-only.
+[Unit]
+Description=pump-api FastAPI inference
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=localhost/pump-api:latest
+ContainerName=pump-api
+# `:alias=pump-api` is REQUIRED for aardvark-dns to register the container name
+# as a DNS entry on the pump network. Podman 4.9.3 Quadlet on Ubuntu 24.04 does
+# NOT auto-register ContainerName as a DNS alias the way docker-compose does
+# (the `NetworkAlias=` Quadlet directive only exists in Podman 5.x+). Without
+# this, pump-dashboard fails with "Temporary failure in name resolution" when
+# resolving `http://pump-api:8000`.
+Network=pump.network:alias=pump-api
+Volume=/srv/pump/code/models:/app/models:ro
+Environment=MODELS_DIR=/app/models
+Environment=MODEL_CACHE_SIZE=1
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=MKL_NUM_THREADS=1
+Environment=PYTHONUNBUFFERED=1
+Environment=UVICORN_WORKERS=1
+PublishPort=100.82.48.74:8000:8000
+HealthCmd=python -c "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/health').status == 200 else sys.exit(1)"
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=20s
+LogDriver=journald
+NoNewPrivileges=true
+
+[Service]
+Restart=always
+TimeoutStartSec=120
+
+[Install]
+WantedBy=default.target
