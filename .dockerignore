@@ -1,0 +1,54 @@
+# Keep Docker build context lean.
+.git
+.github
+.gitignore
+.dockerignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+.venv
+venv
+
+# Django local-only
+db.sqlite3
+db.sqlite3-journal
+portfolio/media
+portfolio/mediafiles
+portfolio/staticfiles
+mediafiles
+staticfiles
+
+# Caches
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.tox
+.coverage
+htmlcov
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.prod.example
+!.env_db.example
+
+# Editors / OS
+.vscode
+.idea
+*.swp
+.DS_Store
+
+# Build/run artifacts
+data
+node_modules
+*.tar
+*.tar.gz
+*.log
+
+# Infra files irrelevant to the app image
+infra
+docker-compose*.yml
+docker-compose*.yaml

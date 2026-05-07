@@ -1,0 +1,61 @@
+# ── Python ─────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ── Django ─────────────────────────────────────────────────────────────
+*.log
+db.sqlite3
+db.sqlite3-journal
+mediafiles/
+staticfiles/
+portfolio/media/
+portfolio/mediafiles/
+portfolio/staticfiles/
+
+# ── Env / secrets — never commit real values ───────────────────────────
+.env
+.env.*
+!.env.example
+!.env.prod.example
+!.env_db.example
+
+# ── Test / coverage / type-check caches ────────────────────────────────
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# ── Editors / OS ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Build / runtime artifacts ──────────────────────────────────────────
+data/
+node_modules/
+*.tar
+*.tar.gz
+*.zip
+*.tgz
+
+# ── Local Podman/Docker debris ─────────────────────────────────────────
+*.pid
+*.sock
