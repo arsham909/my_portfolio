@@ -1,0 +1,45 @@
+# Traefik static config — main server (consolidated edge + app since 2026-05).
+# Installed at /etc/traefik/traefik.yml (mounted read-only into the rootful
+# traefik container; see infra/podman/quadlet/traefik.container).
+#
+# DNS-01 wildcard via Cloudflare. Token `CLOUDFLARE_DNS_API_TOKEN` is read from
+# /etc/portfolio/traefik.env (mode 0600 root) — never inline it here.
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: arsham202@gmail.com
+      storage: /letsencrypt/acme.json
+      # Production CA (default). Phase A used staging during cutover testing —
+      # see git history for the staging caServer line if you need to dry-run again.
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 10
+        resolvers:
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"
+
+api:
+  dashboard: true
+  insecure: false
+
+log:
+  level: INFO
+
+accessLog: {}

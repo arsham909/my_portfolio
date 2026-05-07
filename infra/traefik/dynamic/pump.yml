@@ -1,0 +1,74 @@
+# Phase B route: main Traefik proxies pump.arsham.codes + pump-api.arsham.codes
+# back to the pump-server (142.93.7.44) over the tailnet.
+#
+# Backend reach: containers on pump-server are bound to 100.82.48.74 (its
+# Tailscale IPv4) per /srv/pump/code/docker-compose.tailscale-edge.yml.
+# Cert: Phase A wildcard cert *.arsham.codes already covers both hosts;
+# tls.domains points routers at it so no fresh ACME order fires.
+#
+# Middlewares ported from the old pump-server Traefik:
+#   - ratelimit  : 100 req/s avg, burst 50  (applied to pump-api only)
+#   - secheaders : HSTS preload, frame-deny, no-sniff (both)
+http:
+  middlewares:
+    pump-ratelimit:
+      rateLimit:
+        average: 100
+        burst: 50
+        period: 1s
+    pump-secheaders:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        contentTypeNosniff: true
+        frameDeny: true
+        browserXssFilter: true
+        referrerPolicy: strict-origin-when-cross-origin
+        permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+        customResponseHeaders:
+          X-Powered-By: ""
+          Server: ""
+
+  routers:
+    pump-dashboard:
+      rule: "Host(`pump.arsham.codes`)"
+      entryPoints:
+        - websecure
+      service: pump-dashboard
+      middlewares:
+        - pump-secheaders
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "arsham.codes"
+            sans:
+              - "*.arsham.codes"
+
+    pump-api:
+      rule: "Host(`pump-api.arsham.codes`)"
+      entryPoints:
+        - websecure
+      service: pump-api
+      middlewares:
+        - pump-ratelimit
+        - pump-secheaders
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "arsham.codes"
+            sans:
+              - "*.arsham.codes"
+
+  services:
+    pump-dashboard:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://100.82.48.74:8501"
+
+    pump-api:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://100.82.48.74:8000"

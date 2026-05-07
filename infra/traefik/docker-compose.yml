@@ -1,0 +1,22 @@
+# DEPRECATED (2026-05) — superseded by infra/podman/quadlet/traefik.container.
+# This file is kept only until Phase A cutover stabilizes; will be deleted after
+# the new Quadlet-managed Traefik has served production traffic for 7 days.
+#
+# Original: reference Traefik stack for Server A.
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080"  # dashboard — secure with auth before exposing
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./dynamic:/etc/traefik/dynamic:ro
+      - traefik_letsencrypt:/letsencrypt
+
+volumes:
+  traefik_letsencrypt:

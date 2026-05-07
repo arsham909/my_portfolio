@@ -1,0 +1,30 @@
+# Drop into /etc/traefik/dynamic/ on main. File provider hot-reloads.
+# Backend is the rootless portfolio container's host-side publish at 127.0.0.1:8000
+# (see infra/podman/quadlet/portfolio.container).
+# tls.domains requests one wildcard cert covering arsham.codes + *.arsham.codes,
+# so adding sub-apps later (app1.arsham.codes etc.) needs no new ACME order.
+http:
+  routers:
+    portfolio:
+      rule: "Host(`arsham.codes`) || Host(`www.arsham.codes`)"
+      entryPoints:
+        - websecure
+      service: portfolio
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "arsham.codes"
+            sans:
+              - "*.arsham.codes"
+
+  services:
+    portfolio:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://127.0.0.1:8000"
+        # No Traefik-level healthCheck: the Quadlet HealthCmd on the portfolio
+        # container restarts it on /healthz/ failure, so a second probe at the
+        # proxy adds nothing (and Traefik v3.1 file provider misbehaves with
+        # scheme overrides on loopback URLs). Re-add only when there's >1
+        # backend server to fail out.
