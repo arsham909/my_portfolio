@@ -1,0 +1,40 @@
+# DEPRECATED (2026-05) — superseded by Podman Quadlet units in infra/podman/quadlet/.
+# Production runs traefik.container (rootful) + portfolio.container + postgres.container
+# (rootless, user `app`) on a single 4GB main box, managed by systemd via Quadlet.
+# Kept for one release as a parity reference for local Docker workflows; will be
+# removed after Phase A cutover is stable for 7 days.
+#
+# Original notes:
+# Production stack — Server B (app)
+# Traefik (Server A) terminates TLS and proxies to web:8000 over Wireguard.
+# Web service binds to ${WEB_BIND_ADDR} (default 127.0.0.1) so :8000 is not public.
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env_db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    image: ${WEB_IMAGE:-portfolio:local}
+    build:
+      context: ./portfolio
+      dockerfile: Dockerfile.prod
+    env_file:
+      - .env.prod
+    restart: unless-stopped
+    ports:
+      - "${WEB_BIND_ADDR:-127.0.0.1}:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
