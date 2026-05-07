@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Contact — Arsham{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero">
+        <h1>contact</h1>
+        <p>questions, collaborations, or just to say hi.</p>
+    </section>
+
+    {% if sent %}
+        <div class="form-card">
+            <div class="flash-success">message sent. i'll get back to you soon.</div>
+            <p><a href="{% url 'homepage:homepage' %}">&larr; back home</a></p>
+        </div>
+    {% else %}
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="send">
+            </form>
+        </div>
+    {% endif %}
+</main>
+{% endblock %}

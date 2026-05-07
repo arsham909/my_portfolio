@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Projects — Arsham{% endblock %}
+{% block meta_description %}Projects by Arsham Ardeshirian — Python, AWS, distributed systems.{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero">
+        <h1>projects</h1>
+        <p>things i've built. each card has a github link, live demo when available, and a write-up.</p>
+    </section>
+
+    {% if projects %}
+    <div class="project-list">
+        {% for p in projects %}
+        <article class="proj-card has-cover">
+            <a class="proj-cover" href="{{ p.get_absolute_url }}">
+                <img src="{{ p.cover_image.url }}" alt="{{ p.title }}" loading="lazy">
+            </a>
+            <div class="proj-body">
+                <h3><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h3>
+                {% if p.tech %}<div class="proj-tech">{{ p.tech }}</div>{% endif %}
+                <p class="proj-summary">{{ p.summary }}</p>
+                <div class="proj-links">
+                    <a class="proj-link-btn" href="{{ p.get_absolute_url }}">details</a>
+                    {% if p.demo_url %}<a class="proj-link-btn" href="{{ p.demo_url }}" target="_blank" rel="noopener">live demo</a>{% endif %}
+                    {% if p.github_url %}<a class="proj-link-btn" href="{{ p.github_url }}" target="_blank" rel="noopener">{% include "homepage/_octocat.svg" %}github</a>{% endif %}
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>no projects yet — add one in the <a href="/admin/homepage/project/">admin panel</a>.</p>
+    {% endif %}
+</main>
+{% endblock %}

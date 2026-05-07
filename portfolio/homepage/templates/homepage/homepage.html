@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_tags %}
+{% load homepage_tags %}
+
+{% block title %}Arsham — home{% endblock %}
+{% block meta_description %}Arsham Ardeshirian — Python backend engineer. Django, FastAPI, AWS. Projects, posts, and experiments.{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero hero-split">
+        <div class="hero-text">
+            <span class="eyebrow">// software engineer · Toronto, ON</span>
+            <h1>hi, i'm <span class="name">arsham</span></h1>
+            <p class="value-prop">i build production Python backends — Django, FastAPI, PostgreSQL, AWS — and ship them end-to-end.</p>
+            <p>this is where my projects, experiments, and writing live. <a href="{% url 'homepage:aboutme' %}">more about me →</a></p>
+            <div class="social-row">
+                <a class="social-link primary" href="{% static 'arsham_resume.pdf' %}" download>↓ Download CV</a>
+                <a class="social-link" href="https://github.com/arsham909" target="_blank" rel="noopener">GitHub</a>
+                <a class="social-link" href="https://linkedin.com/in/arshamardeshirian/" target="_blank" rel="noopener">LinkedIn</a>
+                <a class="social-link" href="mailto:arsham202@gmail.com">Email</a>
+                <a class="social-link" href="{% url 'homepage:contactme' %}">Contact</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="profile-photo">
+                {# Drop a square photo at static/img/profile.jpg to replace this placeholder #}
+                <img src="{% static 'img/profile.jpg' %}" alt="Arsham Ardeshirian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="photo-fallback">A</div>
+            </div>
+            <div class="cert-badge">
+                {# Drop the AWS Credly badge at static/img/aws-saa.png to replace #}
+                <img src="{% static 'img/aws-saa.png' %}" alt="AWS Certified Solutions Architect — Associate" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <div class="cert-fallback">
+                    <div class="cert-fallback-label">AWS Certified</div>
+                    <div class="cert-fallback-title">Solutions Architect — Associate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>featured projects</h2>
+            <a href="{% url 'homepage:project_list' %}">all projects &rarr;</a>
+        </div>
+        {% if featured_projects %}
+        <div class="project-list">
+            {% for p in featured_projects %}
+            <article class="proj-card has-cover">
+                <a class="proj-cover" href="{{ p.get_absolute_url }}">
+                    <img src="{{ p.cover_image.url }}" alt="{{ p.title }}" loading="lazy">
+                </a>
+                <div class="proj-body">
+                    <h3><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h3>
+                    {% if p.tech %}<div class="proj-tech">{{ p.tech }}</div>{% endif %}
+                    <p class="proj-summary">{{ p.summary }}</p>
+                    <div class="proj-links">
+                        <a class="proj-link-btn" href="{{ p.get_absolute_url }}">details</a>
+                        {% if p.demo_url %}<a class="proj-link-btn" href="{{ p.demo_url }}" target="_blank" rel="noopener">live demo</a>{% endif %}
+                        {% if p.github_url %}<a class="proj-link-btn" href="{{ p.github_url }}" target="_blank" rel="noopener">{% include "homepage/_octocat.svg" %}github</a>{% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>no featured projects yet — add one in the <a href="/admin/homepage/project/">admin panel</a>.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>recent posts</h2>
+            <a href="{% url 'blog:post_list' %}">all posts &rarr;</a>
+        </div>
+        {% if recentPosts %}
+        <div class="card-grid">
+            {% for post in recentPosts %}
+            <article class="card">
+                <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                <div class="card-meta">{{ post.publish|date:"M j, Y" }} · {{ post.body|reading_time }} min read</div>
+                <div class="card-excerpt">{{ post.body|card_excerpt:20 }}</div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>no posts yet.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}

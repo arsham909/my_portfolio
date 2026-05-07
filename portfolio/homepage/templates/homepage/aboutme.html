@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About — Arsham Ardeshirian{% endblock %}
+{% block meta_description %}Arsham Ardeshirian — Python backend engineer. Django, FastAPI, PostgreSQL, AWS. AWS Certified Solutions Architect – Associate.{% endblock %}
+
+{% block content %}
+<main>
+    <section class="portfolio-hero">
+        <span class="eyebrow">// software engineer · Toronto, ON</span>
+        <h1>about <span class="name">arsham</span></h1>
+        <p class="role">software engineer building production Python backends with Django, FastAPI, PostgreSQL, and AWS.</p>
+        <p class="lede">i ship features end-to-end: REST API design, async processing with Celery/Redis, containerization with Docker, and infrastructure-as-code with AWS CDK. AWS Certified Solutions Architect — Associate.</p>
+        <div class="meta-row">
+            <span>Toronto, ON</span>
+            <span>eligible to work in Canada</span>
+            <span>open to opportunities</span>
+        </div>
+        <div class="social-row">
+            <a class="social-link primary" href="{% static 'arsham_resume.pdf' %}" download>↓ Download CV</a>
+            <a class="social-link" href="https://github.com/arsham909" target="_blank" rel="noopener">{% include "homepage/_octocat.svg" %}GitHub</a>
+            <a class="social-link" href="https://linkedin.com/in/arshamardeshirian/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="social-link" href="mailto:arsham202@gmail.com">Email</a>
+            <a class="social-link" href="{% url 'homepage:contactme' %}">Contact</a>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-heading"><h2>summary</h2></div>
+        <article class="article-body summary-block">
+            <p>i'm <strong>Arsham Ardeshirian</strong>, a software engineer based in Toronto. my path is non-linear — mechanical engineering degree first, then a deep dive into electronics, then a hard pivot into software. that breadth shows up in how i build: i think in systems, care about the physical edges (latency, queues, throughput), and own features end-to-end.</p>
+
+            <p>my day-job craft is production Python backends — Django, FastAPI, REST APIs, PostgreSQL — wrapped in Docker, deployed to AWS, with the boring-but-important parts in place: pytest, CI/CD, observability, and IaC via AWS CDK. AWS Certified Solutions Architect — Associate.</p>
+
+            <p>i go deep on things i want to truly understand. when i wanted to know how Redis works, i wrote a from-scratch async Redis server. when i wanted to know how HTTP works, i built an HTTP/1.1 server with zero dependencies. when i wanted to ship something cloud-native end-to-end, i built Log Sentinel — a real-time AWS log pipeline with Bedrock-powered anomaly detection and full IaC.</p>
+
+            <p>i write about what i build and break in <a href="{% url 'blog:post_list' %}">the blog</a>. always open to interesting roles, collaborations, and conversations.</p>
+        </article>
+    </section>
+
+    <section>
+        <div class="section-heading"><h2>experience</h2></div>
+        <div class="exp-card">
+            <div class="exp-head">
+                <div>
+                    <div class="exp-title">Automation Systems Developer <span class="exp-company">@ Accu Electric LLC</span></div>
+                </div>
+                <div class="exp-period">Aug 2025 — Mar 2026</div>
+            </div>
+            <div class="exp-tech">Django · PostgreSQL · HTMX · Redis · Celery · FastAPI · Docker</div>
+            <ul>
+                <li>Engineered an internal repair-tracking platform used by <strong>8+ technicians daily</strong>, replacing 3 paper-based workflows and reducing manual data-entry errors by <strong>40%</strong>.</li>
+                <li>Built Streamlit dashboards backed by Django REST Framework over PostgreSQL — automated KPI reporting for 3 departments, cutting report generation from 4+ hours to real-time.</li>
+                <li>Cut average job turnaround by 2-3 hours (<strong>~25% throughput gain</strong>) via async background processing with Celery + Redis.</li>
+                <li>Wrote unit + integration tests with pytest, containerized with Docker Compose, deployed to a Linux VPS behind Nginx — owned full SDLC.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>featured projects</h2>
+            <a href="{% url 'homepage:project_list' %}">all projects &rarr;</a>
+        </div>
+        {% if projects %}
+        <div class="project-list">
+            {% for p in projects %}
+            <article class="proj-card has-cover">
+                <a class="proj-cover" href="{{ p.get_absolute_url }}">
+                    <img src="{{ p.cover_image.url }}" alt="{{ p.title }}" loading="lazy">
+                </a>
+                <div class="proj-body">
+                    <h3><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h3>
+                    {% if p.tech %}<div class="proj-tech">{{ p.tech }}</div>{% endif %}
+                    <p class="proj-summary">{{ p.summary }}</p>
+                    <div class="proj-links">
+                        <a class="proj-link-btn" href="{{ p.get_absolute_url }}">details</a>
+                        {% if p.demo_url %}<a class="proj-link-btn" href="{{ p.demo_url }}" target="_blank" rel="noopener">live demo</a>{% endif %}
+                        {% if p.github_url %}<a class="proj-link-btn" href="{{ p.github_url }}" target="_blank" rel="noopener">{% include "homepage/_octocat.svg" %}github</a>{% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>no projects yet — add one in the <a href="/admin/homepage/project/">admin panel</a>.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <div class="section-heading"><h2>certifications &amp; education</h2></div>
+        <div class="badge-row">
+            <div class="badge">
+                <div class="badge-label">certification</div>
+                <div class="badge-title">AWS Certified Solutions Architect — Associate</div>
+                <div class="badge-meta">March 2026</div>
+            </div>
+            <div class="badge">
+                <div class="badge-label">education</div>
+                <div class="badge-title">Bachelor of Mechanical Engineering</div>
+                <div class="badge-meta">University of Kharazmi · 2022</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>technical skills</h2>
+            <span class="hint">click any chip to find related posts</span>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-group">
+                <h4>languages</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'python' %}">Python</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'java' %}">Java</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'javascript' %}">JavaScript</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'sql' %}">SQL</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'bash' %}">Bash</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>frameworks</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'django' %}">Django</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'drf' %}">DRF</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'fastapi' %}">FastAPI</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'flask' %}">Flask</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'streamlit' %}">Streamlit</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'htmx' %}">HTMX</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>databases</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'postgresql' %}">PostgreSQL</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'redis' %}">Redis</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'duckdb' %}">DuckDB</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'sqlite' %}">SQLite</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'dynamodb' %}">DynamoDB</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>cloud &amp; devops</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'aws' %}">AWS</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'kinesis' %}">Kinesis</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'lambda' %}">Lambda</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 's3' %}">S3</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'sns' %}">SNS</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'bedrock' %}">Bedrock</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'cdk' %}">CDK</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'docker' %}">Docker</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'github-actions' %}">GitHub Actions</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'linux' %}">Linux</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'cicd' %}">CI/CD</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>libraries</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'opencv' %}">OpenCV</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'pandas' %}">Pandas</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'numpy' %}">NumPy</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'scikit-learn' %}">Scikit-learn</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'pydantic' %}">Pydantic</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'celery' %}">Celery</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>testing</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'pytest' %}">pytest</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'testing' %}">unit testing</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'integration-testing' %}">integration testing</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'tdd' %}">TDD</a>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>concepts</h4>
+                <div class="skill-chips">
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'rest-api' %}">REST APIs</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'asyncio' %}">asyncio</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'event-driven' %}">event-driven</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'microservices' %}">microservices</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'oop' %}">OOP</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'sql-optimization' %}">SQL optimization</a>
+                    <a class="skill-chip" href="{% url 'blog:post_list_by_tag' 'agile' %}">Agile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

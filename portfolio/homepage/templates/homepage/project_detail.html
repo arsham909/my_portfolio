@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load homepage_tags %}
+
+{% block title %}{{ project.title }} — Arsham{% endblock %}
+{% block meta_description %}{{ project.summary }}{% endblock %}
+
+{% block content %}
+<main>
+    <article class="article-body">
+        <header class="article-header">
+            <p><a href="{% url 'homepage:project_list' %}">&larr; all projects</a></p>
+            <h1>{{ project.title }}</h1>
+            {% if project.tech %}<div class="proj-tech">{{ project.tech }}</div>{% endif %}
+            <p class="article-meta">{{ project.summary }}</p>
+            <div class="proj-links" style="margin-top:1rem;">
+                {% if project.demo_url %}<a class="social-link primary" href="{{ project.demo_url }}" target="_blank" rel="noopener">live demo</a>{% endif %}
+                {% if project.github_url %}<a class="social-link" href="{{ project.github_url }}" target="_blank" rel="noopener">{% include "homepage/_octocat.svg" %}github</a>{% endif %}
+            </div>
+        </header>
+
+        {% if project.cover_image %}
+        <div class="post-cover">
+            <img src="{{ project.cover_image.url }}" alt="{{ project.title }}">
+        </div>
+        {% endif %}
+
+        {% if project.youtube_embed_id %}
+        <div class="video-embed">
+            <iframe
+                src="https://www.youtube.com/embed/{{ project.youtube_embed_id }}?rel=0&modestbranding=1&playsinline=1"
+                title="{{ project.title }} demo"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+            <p class="video-fallback"><a href="{{ project.youtube_url }}" target="_blank" rel="noopener">if video doesn't load, watch on YouTube →</a></p>
+        </div>
+        {% endif %}
+
+        {% if project.body %}
+            {{ project.body|project_markdown }}
+        {% endif %}
+
+        {% if project.images.all %}
+        <section class="post-gallery">
+            <h2>gallery</h2>
+            <div class="gallery-grid">
+                {% for img in project.images.all %}
+                <figure>
+                    <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:img.caption }}" loading="lazy">
+                    {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+                </figure>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </article>
+</main>
+{% endblock %}
