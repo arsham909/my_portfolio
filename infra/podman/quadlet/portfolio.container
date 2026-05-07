@@ -5,7 +5,10 @@ Requires=postgres.service
 
 [Container]
 ContainerName=portfolio
-Image=ghcr.io/arsham/portfolio:latest
+# CI/CD pushes here on every commit to main. Deploy job runs `podman pull`
+# then re-tags the new sha-<digest> image as :latest, so a `systemctl restart`
+# picks up the new bits without rewriting this file.
+Image=ghcr.io/arsham909/my_portfolio:latest
 Network=portfolio.network
 EnvironmentFile=/etc/portfolio/portfolio.env
 Environment=SQL_HOST=postgres
