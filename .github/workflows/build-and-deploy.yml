@@ -74,15 +74,23 @@ jobs:
         env:
           TAG: ${{ needs.build.outputs.tag }}
         run: |
+          # Use stdin-piped `bash -s` with positional args. The earlier
+          # `sudo -iu app bash -lc '<multi-line>'` shape silently no-op'd —
+          # bash inside sudo's login shell didn't see the script body.
           ssh -i ~/.ssh/id_deploy -p ${{ env.DEPLOY_PORT }} \
               ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} \
-              "sudo -iu app bash -lc '
-                set -euo pipefail
-                podman pull ${{ env.IMAGE }}:${TAG}
-                # Re-tag to :latest so the Quadlet (Image=…:latest) picks it up
-                podman tag ${{ env.IMAGE }}:${TAG} ${{ env.IMAGE }}:latest
-                systemctl --user restart portfolio
-              '"
+              "sudo -iu app bash -s -- '${{ env.IMAGE }}' '${TAG}'" <<'SCRIPT'
+          set -euo pipefail
+          IMAGE="$1"; TAG="$2"
+          # systemctl --user needs the user instance bus reachable; sudo -i
+          # alone doesn't propagate XDG_RUNTIME_DIR. Lingering keeps
+          # /run/user/$UID alive for the app user across logouts.
+          export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+          podman pull "$IMAGE:$TAG"
+          # Re-tag to :latest so the Quadlet (Image=…:latest) picks it up.
+          podman tag "$IMAGE:$TAG" "$IMAGE:latest"
+          systemctl --user restart portfolio
+          SCRIPT
 
       - name: smoke test /healthz/
         run: |
