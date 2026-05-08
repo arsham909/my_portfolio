@@ -1,0 +1,15 @@
+[Unit]
+Description=Postgres -> restic -> S3 backup
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/pg-dump-and-backup.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+TimeoutStartSec=30min
+
+[Install]
+WantedBy=multi-user.target
