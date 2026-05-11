@@ -56,3 +56,5 @@ take a `tag` input and run the deploy steps from `build-and-deploy.yml`).
 - Pin Quadlet `Image=` to a digest and rewrite the unit on the box per
   deploy, rather than relying on retagging `:latest`.
 - Add `pytest` job once tests exist.
+
+test
