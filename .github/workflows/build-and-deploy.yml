@@ -17,7 +17,7 @@ permissions:
 
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/my_portfolio
-  DEPLOY_HOST: 100.80.115.32
+  DEPLOY_HOST: 100.82.115.32
   DEPLOY_USER: deploy
   DEPLOY_PORT: '22'
 
