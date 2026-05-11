@@ -52,6 +52,7 @@ take a `tag` input and run the deploy steps from `build-and-deploy.yml`).
 - Move SSH from main's public IP to the **tailscale0** interface and have the
   workflow connect via a Tailscale OAuth ephemeral key
   (`tailscale/github-action`). This narrows main's `:22` exposure.
+  
 - Pin Quadlet `Image=` to a digest and rewrite the unit on the box per
   deploy, rather than relying on retagging `:latest`.
 - Add `pytest` job once tests exist.
