@@ -17,7 +17,7 @@ permissions:
 
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/my_portfolio
-  DEPLOY_HOST: 100.82.115.32
+  DEPLOY_HOST: 100.82.115.32  # main tailnet IP — only reachable after TS join
   DEPLOY_USER: deploy
   DEPLOY_PORT: '22'
 
@@ -62,13 +62,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: join tailnet                                                                         
-        uses: tailscale/github-action@v2                                                           
-        with:                                                                                      
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}                                       
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}                                             
-          tags: tag:ci                                                                             
-          ephemeral: true  
+      - name: join tailnet
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ephemeral: true
+
       - name: install ssh key
         run: |
           mkdir -p ~/.ssh
