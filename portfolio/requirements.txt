@@ -10,6 +10,8 @@ pillow==11.2.1
 psycopg2-binary==2.9.10
 python-decouple==3.8
 python-dotenv==1.1.0
+six==1.17.0
 sqlparse==0.5.3
 tzdata==2025.2
+webencodings==0.5.1
 whitenoise==6.8.2
