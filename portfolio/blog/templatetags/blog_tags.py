@@ -7,6 +7,7 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import escape, strip_tags
 from django.utils.safestring import mark_safe
 
+from common.sanitize import clean_html
 from ..models import Post, PostImage
 
 register = template.Library()
@@ -33,6 +34,8 @@ def get_most_commented_posts(count=5):
     )
 
 
+# Shortcodes are expanded *after* markdown rendering so authors can drop
+# {% post_image N %} between paragraphs and get a <figure> inline.
 SHORTCODE_RE = re.compile(r'\{%\s*post_image\s+(\d+)\s*%\}')
 
 
@@ -60,6 +63,7 @@ def markdown_format(text):
     """
     rendered = markdown.markdown(text or '', extensions=['extra'], output_format='html')
     rendered = SHORTCODE_RE.sub(_render_shortcode, rendered)
+    rendered = clean_html(rendered)
     return mark_safe(rendered)
 
 

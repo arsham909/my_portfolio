@@ -7,10 +7,13 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import escape, strip_tags
 from django.utils.safestring import mark_safe
 
+from common.sanitize import clean_html
 from ..models import ProjectImage
 
 register = template.Library()
 
+# Shortcodes are expanded *after* markdown rendering so authors can drop
+# {% project_image N %} between paragraphs and get a <figure> inline.
 PROJECT_SHORTCODE_RE = re.compile(r'\{%\s*project_image\s+(\d+)\s*%\}')
 MARKDOWN_IMAGE_RE = re.compile(r'!\[[^\]]*\]\([^)]*\)')
 
@@ -35,6 +38,7 @@ def _render_project_shortcode(match):
 def project_markdown(text):
     rendered = markdown.markdown(text or '', extensions=['extra'], output_format='html')
     rendered = PROJECT_SHORTCODE_RE.sub(_render_project_shortcode, rendered)
+    rendered = clean_html(rendered)
     return mark_safe(rendered)
 
 
