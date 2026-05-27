@@ -99,3 +99,34 @@ class ProjectImage(models.Model):
 
     def __str__(self):
         return f'Image #{self.pk} — {self.project.title}'
+
+
+class SiteConfig(models.Model):
+    """Site-wide editable settings. Enforced singleton (pk=1)."""
+
+    resume_file = models.FileField(
+        upload_to='resume/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(['pdf'])],
+        help_text='Upload your latest resume PDF. Replaces the previous file.',
+    )
+    resume_label = models.CharField(max_length=80, default='Download Resume')
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Site configuration'
+        verbose_name_plural = 'Site configuration'
+
+    def save(self, *args, **kwargs):
+        # Enforce singleton: one row keeps admin + templates unambiguous.
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+    def __str__(self):
+        return 'Site configuration'

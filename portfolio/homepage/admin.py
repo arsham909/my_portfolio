@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html, format_html_join
 
-from .models import Project, ProjectImage
+from .models import Project, ProjectImage, SiteConfig
 
 
 class ProjectImageInline(admin.TabularInline):
@@ -32,7 +32,13 @@ class ProjectAdmin(admin.ModelAdmin):
         }),
         ('Detail page', {
             'fields': ('body', 'image_shortcodes', 'youtube_url', 'demo_url', 'github_url'),
-            'description': 'Body uses Markdown. Save first, then paste a shortcode below into the body where you want each gallery image to appear inline.',
+            'description': (
+                'Body uses Markdown. To place a gallery image between paragraphs, '
+                'paste its shortcode (e.g. <code>{% project_image 2 %}</code>) on '
+                'its own line in the body markdown where you want it to appear. '
+                'Upload images first, save, then copy the shortcode from the '
+                'table below.'
+            ),
         }),
         ('Meta', {
             'fields': ('is_published', 'created', 'updated'),
@@ -54,7 +60,7 @@ class ProjectAdmin(admin.ModelAdmin):
             return '(no gallery images yet — add some in the Images section below)'
         rows = format_html_join(
             '',
-            '<tr><td style="padding:4px 8px"><code>{{% project_image {} %}}</code></td>'
+            '<tr><td style="padding:4px 8px"><code style="cursor:text;user-select:all">{{% project_image {} %}}</code></td>'
             '<td style="padding:4px 8px"><a href="{}" target="_blank">view</a></td>'
             '<td style="padding:4px 8px">{}</td></tr>',
             ((img.pk, img.image.url, img.caption or '—') for img in images),
@@ -68,3 +74,15 @@ class ProjectAdmin(admin.ModelAdmin):
             rows,
         )
     image_shortcodes.short_description = 'Inline image shortcodes'
+
+
+@admin.register(SiteConfig)
+class SiteConfigAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'updated')
+    readonly_fields = ('updated',)
+
+    def has_add_permission(self, request):
+        return not SiteConfig.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False

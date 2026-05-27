@@ -15,7 +15,9 @@
             <p class="value-prop">i build production Python backends — Django, FastAPI, PostgreSQL, AWS — and ship them end-to-end.</p>
             <p>this is where my projects, experiments, and writing live. <a href="{% url 'homepage:aboutme' %}">more about me →</a></p>
             <div class="social-row">
-                <a class="social-link primary" href="{% static 'arsham_resume.pdf' %}" download>↓ Download CV</a>
+                {% if site_config.resume_file %}
+                <a class="social-link primary" href="{{ site_config.resume_file.url }}" download>↓ {{ site_config.resume_label }}</a>
+                {% endif %}
                 <a class="social-link" href="https://github.com/arsham909" target="_blank" rel="noopener">GitHub</a>
                 <a class="social-link" href="https://linkedin.com/in/arshamardeshirian/" target="_blank" rel="noopener">LinkedIn</a>
                 <a class="social-link" href="mailto:arsham202@gmail.com">Email</a>

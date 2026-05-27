@@ -30,6 +30,9 @@
                 <li><a href="{% url 'blog:post_list' %}"{% if request.resolver_match.namespace == 'blog' %} class="active"{% endif %}>blog</a></li>
                 <li><a href="{% url 'homepage:aboutme' %}"{% if request.resolver_match.url_name == 'aboutme' %} class="active"{% endif %}>about</a></li>
                 <li><a href="{% url 'homepage:contactme' %}"{% if request.resolver_match.url_name == 'contactme' %} class="active"{% endif %}>contact</a></li>
+                {% if site_config.resume_file %}
+                <li><a href="{{ site_config.resume_file.url }}" download>resume</a></li>
+                {% endif %}
                 <li>
                     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
                         <span class="theme-icon-dark">☾</span>
