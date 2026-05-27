@@ -3,14 +3,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 from taggit.models import Tag
 
+from common.utils import sanitize_header
 from .forms import EmailPostForm, CommentForm
 from .models import Post
 from .templatetags.blog_tags import extract_used_image_pks
 
 
 @require_POST
+@ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def post_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     comment = None
@@ -26,6 +29,7 @@ def post_comment(request, post_id):
     )
 
 
+@ratelimit(key='ip', rate='5/m', method='POST', block=True)
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     sent = False
@@ -34,10 +38,12 @@ def post_share(request, post_id):
         if form.is_valid():
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['name']} ({cd['email']}) recommends you read {post.title}"
+            safe_name = sanitize_header(cd['name'])
+            safe_email = sanitize_header(cd['email'])
+            subject = f"{safe_name} ({safe_email}) recommends you read {post.title}"
             message = (
                 f"Read {post.title} at {post_url}\n"
-                f"{cd['name']}'s comment: {cd['comments']}"
+                f"{safe_name}'s comment: {cd['comments']}"
             )
             send_mail(
                 subject=subject,

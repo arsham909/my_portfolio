@@ -3,6 +3,7 @@ import os
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.core.mail import send_mail
+from django_ratelimit.decorators import ratelimit
 
 from blog.models import Post
 from .forms import ContactMe, contact_me_form
@@ -12,6 +13,7 @@ from .models import Project
 CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', 'arsham202@gmail.com')
 
 
+@ratelimit(key='ip', rate='5/m', method='POST', block=True)
 def _handle_contact(request):
     sent = False
     if request.method == 'POST':
