@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve as static_serve
 from blog.sitemaps import PostSitemap
 from django.conf import settings
-from django.conf.urls.static import static
 
 sitemaps = {
     'posts' : PostSitemap,
@@ -37,9 +37,13 @@ urlpatterns = [
     ),
 ]
 
-
-if bool(settings.DEBUG):
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve user-uploaded media in both dev and prod. Whitenoise handles
+# /static/ only; we use django.views.static.serve for /media/ because
+# traffic is low and it keeps the deploy single-process.
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', static_serve,
+            {'document_root': settings.MEDIA_ROOT}),
+]
 
 
 handler404 = 'homepage.views.handler404'
