@@ -610,18 +610,6 @@ footer a { margin: 0 0.5rem; }
 }
 .icon-gh { vertical-align: middle; }
 
-/* Skill chip hover (clickable) */
-a.skill-chip {
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.12s ease;
-}
-a.skill-chip:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-bg);
-  text-decoration: none;
-}
 .section-heading .hint {
   font-size: 0.8rem;
   color: var(--text-subtle);
