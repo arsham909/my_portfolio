@@ -29,7 +29,12 @@ class PostAdmin(admin.ModelAdmin):
         }),
         ('Body', {
             'fields': ('body', 'image_shortcodes'),
-            'description': 'Paste the shortcodes below into the body wherever you want each image to appear.',
+            'description': (
+                'To place an image between paragraphs, paste its shortcode '
+                '(e.g. <code>{% post_image 3 %}</code>) on its own line in the '
+                'body markdown where you want it to appear. Upload images first, '
+                'save, then copy the shortcode from the table below.'
+            ),
         }),
     )
 
@@ -41,7 +46,8 @@ class PostAdmin(admin.ModelAdmin):
             return '(no inline images yet — add some in the Images section)'
         rows = format_html_join(
             '',
-            '<tr><td><code>{{% post_image {} %}}</code></td><td><a href="{}" target="_blank">{}</a></td><td>{}</td></tr>',
+            '<tr><td><code style="cursor:text;user-select:all">{{% post_image {} %}}</code></td>'
+            '<td><a href="{}" target="_blank">{}</a></td><td>{}</td></tr>',
             ((img.pk, img.image.url, img.image.url, img.caption or '—') for img in images),
         )
         return format_html(
@@ -60,3 +66,9 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'post', 'created', 'active']
     list_filter = ['active', 'name', 'created', 'updated']
     search_fields = ['name', 'email', 'body']
+    actions = ('approve_comments',)
+
+    @admin.action(description='Approve selected comments')
+    def approve_comments(self, request, queryset):
+        updated = queryset.update(active=True)
+        self.message_user(request, f'{updated} comment(s) approved.')

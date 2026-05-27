@@ -92,7 +92,10 @@ class Comment(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        default=False,
+        help_text='Comment is shown publicly only after an admin approves it.',
+    )
 
     class Meta:
         ordering = ['created']
