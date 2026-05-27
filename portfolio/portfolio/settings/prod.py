@@ -2,6 +2,7 @@ from .base import *  # noqa: F401,F403
 
 DEBUG = False
 
+# Fail-fast on misdeploy: prod must not silently fall back to insecure defaults.
 _required = ('SECRET_KEY', 'ALLOWED_HOSTS', 'POSTGRES_DB', 'POSTGRES_USER', 'POSTGRES_PASSWORD')
 _missing = [k for k in _required if not os.getenv(k)]
 if _missing:
