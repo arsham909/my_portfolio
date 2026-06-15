@@ -5,19 +5,17 @@ Requires=postgres.service
 
 [Container]
 ContainerName=portfolio
-# CI/CD pushes here on every commit to main. Deploy job runs `podman pull`
-# then re-tags the new sha-<digest> image as :latest, so a `systemctl restart`
-# picks up the new bits without rewriting this file.
 Image=ghcr.io/arsham909/my_portfolio:latest
 Network=portfolio.network
 EnvironmentFile=/etc/portfolio/portfolio.env
 Environment=SQL_HOST=postgres
 Environment=SQL_PORT=5432
-# Mediafiles must persist across container restarts and deploys.
-# Without this volume, uploaded images vanish on every restart and
-# /media/ URLs return 404 in production (bug fixed 2026-05-27).
-Volume=portfolio_media.volume:/app/mediafiles:Z
+
+# === MEDIA FIX - Persistent folder ===
+Volume=/home/arsham/blog_media:/home/app/web/mediafiles
+
 PublishPort=127.0.0.1:8000:8000
+
 HealthCmd=python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz/',timeout=2).status==200 else 1)"
 HealthInterval=30s
 HealthRetries=3
