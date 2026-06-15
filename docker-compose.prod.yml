@@ -24,6 +24,8 @@ services:
 
   web:
     image: ${WEB_IMAGE:-portfolio:local}
+    volumes:
+      - /home/arsham/blog_media:/media:Z
     build:
       context: ./portfolio
       dockerfile: Dockerfile.prod
