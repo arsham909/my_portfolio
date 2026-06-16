@@ -1,2 +1,8 @@
+[Unit]
+Description=Portfolio Django media uploads volume
+
 [Volume]
 VolumeName=portfolio_media
+
+[Install]
+WantedBy=default.target

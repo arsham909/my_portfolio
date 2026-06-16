@@ -152,4 +152,5 @@ log "current sshd auth settings (informational)"
 grep -E '^\s*(PasswordAuthentication|PermitRootLogin|AllowUsers)\s' /etc/ssh/sshd_config || true
 sshd -T 2>/dev/null | grep -E '^(permitrootlogin|passwordauthentication) ' || true
 
-log "bootstrap step 1 complete — next: Quadlet install + env files, then harden-ssh.sh"
+log "bootstrap step 1 complete — next: Quadlet install (incl. portfolio_media.volume) + env files, then harden-ssh.sh"
+log "note: portfolio_media named volume is created on first portfolio.service start (no host bind dir needed)"

@@ -7,7 +7,7 @@ Quadlet generates systemd units from these `.container`/`.network`/`.volume` fil
 | Scope    | Path                                          | Used by                                |
 | -------- | --------------------------------------------- | -------------------------------------- |
 | Rootful  | `/etc/containers/systemd/`                    | `traefik.container`, `letsencrypt.volume` |
-| Rootless | `~/.config/containers/systemd/` (user `app`)  | `portfolio.container`, `postgres.container`, `portfolio.network`, `pg_data.volume` |
+| Rootless | `~/.config/containers/systemd/` (user `app`)  | `portfolio.container`, `postgres.container`, `portfolio.network`, `pg_data.volume`, `portfolio_media.volume` |
 
 Rationale: Traefik must bind privileged ports `:80/:443` and uses `Network=host` — runs rootful with `CapDrop=ALL` + `AddCapability=NET_BIND_SERVICE`. App + database run rootless under a dedicated `app` user — extra namespace isolation, no daemon.
 
@@ -25,10 +25,11 @@ sudo systemctl start traefik.service
 sudo loginctl enable-linger app
 sudo -iu app
 mkdir -p ~/.config/containers/systemd
-install -m 0644 portfolio.container postgres.container portfolio.network pg_data.volume \
+install -m 0644 portfolio.container postgres.container portfolio.network pg_data.volume portfolio_media.volume \
     ~/.config/containers/systemd/
 systemctl --user daemon-reload
 systemctl --user start postgres.service
+systemctl --user start portfolio_media-volume.service
 systemctl --user start portfolio.service
 ```
 
@@ -42,12 +43,28 @@ systemctl --user start portfolio.service
 
 `/etc/portfolio/` exists as `0755 root:root`; subfiles use the modes above. Phase F replaces manual creation with SOPS-decrypted Ansible templates.
 
+## Media persistence
+
+Django `MEDIA_ROOT` is `/home/app/web/mediafiles` inside the container. The `portfolio_media` named volume (same pattern as `pg_data`) stores admin uploads across container restarts and image pulls. Data lives under the rootless `app` user's Podman storage — not in the container writable layer.
+
+After changing `portfolio.container` or `portfolio_media.volume` on a running box:
+
+```bash
+install -m 0644 portfolio.container portfolio_media.volume ~/.config/containers/systemd/
+systemctl --user daemon-reload
+systemctl --user start portfolio_media-volume.service
+systemctl --user restart portfolio
+podman volume inspect portfolio_media
+podman inspect portfolio --format '{{json .Mounts}}' | jq .
+```
+
 ## Verify
 
 ```bash
 sudo systemctl status traefik
-systemctl --user --machine=app@ status portfolio postgres
+systemctl --user --machine=app@ status portfolio postgres portfolio_media-volume
 podman ps --format '{{.Names}} {{.Status}}'
+podman volume ls    # expect portfolio_media + pg_data
 curl -fsS http://127.0.0.1:8000/healthz/    # → {"status":"ok"}
 curl -I https://arsham.codes/                # → 200, valid LE cert
 ```

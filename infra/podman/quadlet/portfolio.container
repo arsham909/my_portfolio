@@ -1,7 +1,7 @@
 [Unit]
 Description=Portfolio Django app
-After=postgres.service
-Requires=postgres.service
+After=postgres.service portfolio_media-volume.service
+Requires=postgres.service portfolio_media-volume.service
 
 [Container]
 ContainerName=portfolio
@@ -11,8 +11,8 @@ EnvironmentFile=/etc/portfolio/portfolio.env
 Environment=SQL_HOST=postgres
 Environment=SQL_PORT=5432
 
-# === MEDIA FIX - Persistent folder ===
-Volume=/home/arsham/blog_media:/home/app/web/mediafiles
+# User uploads (admin ImageField/FileField) — named volume survives restarts.
+Volume=portfolio_media.volume:/home/app/web/mediafiles:Z
 
 PublishPort=127.0.0.1:8000:8000
 
